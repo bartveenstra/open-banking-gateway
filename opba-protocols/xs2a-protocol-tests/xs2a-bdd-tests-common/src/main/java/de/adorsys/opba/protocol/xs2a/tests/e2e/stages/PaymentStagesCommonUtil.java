@@ -48,26 +48,28 @@ public class PaymentStagesCommonUtil {
     public static final String IP_ADDRESS = "1.1.1.1";
 
     public static RequestSpecification withPaymentHeaders(String fintechUserId, RequestSigningService requestSigningService, OperationType operationType, String body) {
+        return withPaymentHeaders(fintechUserId, SANDBOX_BANK_ID, requestSigningService, operationType, body);
+    }
+
+    public static RequestSpecification withPaymentHeaders(String fintechUserId, String bankId, RequestSigningService requestSigningService, OperationType operationType, String body) {
         UUID xRequestId = UUID.randomUUID();
         Instant xTimestampUtc = Instant.now();
 
         return RestAssured
-                       .given()
-                       .header(BANK_ID, SANDBOX_BANK_ID)
-                       .header(FINTECH_REDIRECT_URL_OK, FINTECH_REDIR_OK)
-                       .header(FINTECH_REDIRECT_URL_NOK, FINTECH_REDIR_NOK)
-                       .header(SERVICE_SESSION_PASSWORD, SESSION_PASSWORD)
-                       .header(FINTECH_USER_ID, fintechUserId)
-                       .header(FINTECH_ID, DEFAULT_FINTECH_ID)
-                       .header(X_XSRF_TOKEN, XSRF_TOKEN)
-                       .header(X_REQUEST_ID, xRequestId.toString())
-                       .header(X_TIMESTAMP_UTC, xTimestampUtc.toString())
-                       .header(X_OPERATION_TYPE, operationType)
-                       .header(X_REQUEST_SIGNATURE, calculatePaymentSignature(requestSigningService, xRequestId, xTimestampUtc, operationType, fintechUserId, body))
-                       .header(PSU_IP_ADDRESS, IP_ADDRESS);
+                .given()
+                .header(BANK_ID, bankId)
+                .header(FINTECH_REDIRECT_URL_OK, FINTECH_REDIR_OK)
+                .header(FINTECH_REDIRECT_URL_NOK, FINTECH_REDIR_NOK)
+                .header(SERVICE_SESSION_PASSWORD, SESSION_PASSWORD)
+                .header(FINTECH_USER_ID, fintechUserId)
+                .header(FINTECH_ID, DEFAULT_FINTECH_ID)
+                .header(X_XSRF_TOKEN, XSRF_TOKEN)
+                .header(X_REQUEST_ID, xRequestId.toString())
+                .header(X_TIMESTAMP_UTC, xTimestampUtc.toString())
+                .header(X_OPERATION_TYPE, operationType)
+                .header(X_REQUEST_SIGNATURE, calculatePaymentSignature(requestSigningService, xRequestId, xTimestampUtc, operationType, fintechUserId, body, bankId))
+                .header(PSU_IP_ADDRESS, IP_ADDRESS);
     }
-
-
 
     public static RequestSpecification withPaymentInfoHeaders(String fintechUserId, RequestSigningService requestSigningService, OperationType operationType) {
         UUID xRequestId = UUID.randomUUID();
@@ -88,12 +90,12 @@ public class PaymentStagesCommonUtil {
     }
 
     private static String calculatePaymentSignature(RequestSigningService requestSigningService, UUID xRequestId, Instant xTimestampUtc,
-                                                    OperationType operationType, String fintechUserId, String body) {
+                                                    OperationType operationType, String fintechUserId, String body, String bankId) {
         PaymentInitiationDataToSign paymentInitiationDataToSign = PaymentInitiationDataToSign.builder()
                                                                           .xRequestId(xRequestId)
                                                                           .instant(xTimestampUtc)
                                                                           .operationType(operationType)
-                                                                          .bankId(SANDBOX_BANK_ID)
+                                                                          .bankId(bankId)
                                                                           .fintechUserId(fintechUserId)
                                                                           .redirectOk(FINTECH_REDIR_OK)
                                                                           .redirectNok(FINTECH_REDIR_NOK)
