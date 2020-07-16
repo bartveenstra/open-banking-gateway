@@ -216,6 +216,7 @@ paths:
         - $ref: '#/components/parameters/redirectState'
         #query
         - $ref: '#/components/parameters/redirectCode'
+        - $ref: '#/components/parameters/code'
       responses:
         '200':
           $ref: '#/components/responses/200_AuthorizeResponse'
@@ -357,6 +358,14 @@ components:
       description: Code used to retrieve a redirect session. This is
         generaly transported as a query parameter
       example: "faadsf93nlas32wx"
+      schema:
+        type: string
+
+    code:
+      name: code
+      in: query
+      description: OAuth2 Authorization Code. Used to retrieve access token & refresh token from authorization server
+      example: "XXZ6NwBKtpUXfKRHcOAGWH58"
       schema:
         type: string
 

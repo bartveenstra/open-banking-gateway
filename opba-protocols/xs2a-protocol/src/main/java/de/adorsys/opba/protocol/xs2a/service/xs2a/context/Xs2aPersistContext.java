@@ -22,7 +22,6 @@ public class Xs2aPersistContext extends ValidatedExecution<Xs2aContext> {
     protected void doRealExecution(DelegateExecution execution, Xs2aContext context) {
         Consent consent = consents.findByServiceSessionId(context.getServiceSessionId())
                 .orElseThrow(() -> new IllegalStateException("No consent for session"));
-
         consent.setContext(mapper.getMapper().writeValueAsString(
                 ImmutableMap.of(
                         context.getClass().getCanonicalName(),

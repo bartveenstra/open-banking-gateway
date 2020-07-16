@@ -2,6 +2,7 @@ package de.adorsys.opba.protocol.xs2a.service.xs2a.dto;
 
 import de.adorsys.opba.protocol.xs2a.service.xs2a.context.Xs2aContext;
 import de.adorsys.xs2a.adapter.service.RequestHeaders;
+import de.adorsys.xs2a.adapter.service.model.TokenResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.mapstruct.Mapper;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static de.adorsys.opba.protocol.xs2a.constant.GlobalConst.SPRING_KEYWORD;
 import static de.adorsys.opba.protocol.xs2a.constant.GlobalConst.XS2A_MAPPERS_PACKAGE;
+import static de.adorsys.xs2a.adapter.service.RequestHeaders.AUTHORIZATION;
 import static de.adorsys.xs2a.adapter.service.RequestHeaders.CONSENT_ID;
 
 @Data
@@ -24,6 +26,10 @@ public class Xs2aWithConsentIdHeaders extends Xs2aStandardHeaders {
         Map<String, String> allValues = super.toHeaders().toMap();
 
         allValues.put(CONSENT_ID, consentId);
+        TokenResponse tokenResponse = getOauthTokenResponse();
+        if(tokenResponse != null) {
+            allValues.put(AUTHORIZATION, "Bearer " + getOauthTokenResponse().getAccessToken());
+        }
 
         return RequestHeaders.fromMap(allValues);
     }

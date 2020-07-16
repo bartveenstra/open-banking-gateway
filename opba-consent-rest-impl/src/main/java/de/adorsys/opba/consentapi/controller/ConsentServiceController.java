@@ -113,13 +113,15 @@ public class ConsentServiceController implements ConsentAuthorizationApi {
     public CompletableFuture fromAspspOkUsingGET(
         String authId,
         String redirectState,
-        String redirectCode) {
+        String redirectCode,
+        String code) {
 
         return fromAspspRedirectHandler.execute(
             FromAspspRequest.builder()
                 .facadeServiceable(FacadeServiceableRequest.builder()
                     .redirectCode(redirectCode)
                     .authorizationSessionId(authId)
+                    .code(code)
                     .build()
                 )
                 .isOk(true)

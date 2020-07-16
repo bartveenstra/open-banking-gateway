@@ -18,6 +18,7 @@ public class FacadeServiceableRequest {
     private final UUID serviceSessionId;
     private final String authorizationSessionId;
     private final String redirectCode;
+    private final String code;
 
     private final String authorization;
     private final String bankId;

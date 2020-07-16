@@ -16,6 +16,7 @@ public abstract class FacadeResultRedirectable<T, C extends AuthStateBody> imple
     private UUID xRequestId;
     private String serviceSessionId;
     private String authorizationSessionId;
+    private String code;
     private URI redirectionTo;
     private C cause;
 

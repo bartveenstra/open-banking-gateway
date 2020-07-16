@@ -27,5 +27,6 @@ public class TransientDataStorage {
 
         private final String psuPassword;
         private final String scaChallengeResult;
+        private final String authorizationCode;
     }
 }

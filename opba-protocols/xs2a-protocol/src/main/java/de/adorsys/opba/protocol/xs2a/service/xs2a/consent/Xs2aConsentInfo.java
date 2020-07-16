@@ -41,4 +41,13 @@ public class Xs2aConsentInfo {
     public boolean isOkRedirectConsent(Xs2aContext ctx) {
         return ctx.isRedirectConsentOk();
     }
+
+    public boolean isOauthAuthorizationCodePresent(Xs2aContext ctx) {
+        return ctx.getAuthorizationCode() != null;
+    }
+
+    public boolean isOauthTokenPresent(Xs2aContext ctx) {
+        return ctx.getOauthTokenResponse() != null;
+    }
+
 }

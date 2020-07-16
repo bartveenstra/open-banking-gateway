@@ -7,10 +7,12 @@ import de.adorsys.opba.protocol.xs2a.service.xs2a.annotations.FrontendCode;
 import de.adorsys.opba.protocol.xs2a.service.xs2a.annotations.ValidationInfo;
 import de.adorsys.opba.protocol.xs2a.service.xs2a.context.Xs2aContext;
 import de.adorsys.xs2a.adapter.service.RequestHeaders;
+import de.adorsys.xs2a.adapter.service.model.TokenResponse;
 import lombok.Data;
 import org.mapstruct.Mapper;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,10 @@ public class Xs2aStandardHeaders {
 
     @NotBlank // can't be provided manually
     private String sagaId;
+
+    private LocalDateTime oauthTokenExpiration;
+    private TokenResponse oauthTokenResponse;
+
 
     public RequestHeaders toHeaders() {
         Map<String, String> allValues = new HashMap<>();

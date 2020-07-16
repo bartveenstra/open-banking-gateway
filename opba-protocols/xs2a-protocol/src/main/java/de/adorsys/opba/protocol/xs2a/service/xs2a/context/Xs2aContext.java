@@ -6,6 +6,7 @@ import de.adorsys.opba.protocol.xs2a.service.storage.NeedsTransientStorage;
 import de.adorsys.opba.protocol.xs2a.service.storage.TransientDataStorage;
 import de.adorsys.xs2a.adapter.service.model.AuthenticationObject;
 import de.adorsys.xs2a.adapter.service.model.StartScaProcessResponse;
+import de.adorsys.xs2a.adapter.service.model.TokenResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -47,6 +48,9 @@ public class Xs2aContext extends BaseContext implements NeedsTransientStorage {
 
     private boolean redirectConsentOk;
 
+    private String oauthTokenExpiration;
+    private TokenResponse oauthTokenResponse;
+
     @JsonIgnore
     public String getPsuPassword() {
         TransientDataStorage.DataEntry entry = this.transientStorage.get(this);
@@ -60,12 +64,24 @@ public class Xs2aContext extends BaseContext implements NeedsTransientStorage {
     }
 
     @JsonIgnore
+    public String getAuthorizationCode() {
+        TransientDataStorage.DataEntry entry = this.transientStorage.get(this);
+        return null != entry ? this.transientStorage.get(this).getAuthorizationCode() : null;
+    }
+
+    @JsonIgnore
     public void setPsuPassword(String psuPassword) {
-        this.transientStorage.set(this, new TransientDataStorage.DataEntry(psuPassword, null));
+        this.transientStorage.set(this, new TransientDataStorage.DataEntry(psuPassword, null, null));
     }
 
     @JsonIgnore
     public void setLastScaChallenge(String scaChallengeResult) {
-        this.transientStorage.set(this, new TransientDataStorage.DataEntry(null, scaChallengeResult));
+        this.transientStorage.set(this, new TransientDataStorage.DataEntry(null, scaChallengeResult, null));
     }
+
+    @JsonIgnore
+    public void setAuthorizationCode(String authorizationCode) {
+        this.transientStorage.set(this, new TransientDataStorage.DataEntry(null, null, authorizationCode));
+    }
+
 }
