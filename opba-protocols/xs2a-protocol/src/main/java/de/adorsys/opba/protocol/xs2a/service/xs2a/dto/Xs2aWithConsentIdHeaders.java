@@ -27,7 +27,7 @@ public class Xs2aWithConsentIdHeaders extends Xs2aStandardHeaders {
 
         allValues.put(CONSENT_ID, consentId);
         TokenResponse tokenResponse = getOauthTokenResponse();
-        if(tokenResponse != null) {
+        if (tokenResponse != null) {
             allValues.put(AUTHORIZATION, "Bearer " + getOauthTokenResponse().getAccessToken());
         }
 
